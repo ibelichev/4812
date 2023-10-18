@@ -18,11 +18,6 @@ public class User {
     private float balance;
 
     /**
-     * Статическая переменная, используемая для генерации уникальных id пользователей
-     */
-    private static long nextId = 1;
-
-    /**
      * Конструктор для создания объекта пользователя
      *
      * @param username  Имя пользователя (логин) для входа
@@ -32,7 +27,15 @@ public class User {
      * @param balance   Начальный баланс
      */
     public User(String username, String password, String firstName, String lastName, float balance) {
-        this.id = nextId++;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.password = password;
+        this.balance = balance;
+    }
+
+    public User(long id, String username, String password, String firstName, String lastName, float balance) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;

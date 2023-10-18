@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <!-- Последовательность для id в таблице User -->
+    <changeSet id="4" author="ibelichev">
+        <createSequence schemaName="entities" sequenceName="user_sequence" startValue="1" incrementBy="1"/>
+    </changeSet>
+
+    <!-- Последовательность для id в таблице Action -->
+    <changeSet id="5" author="ibelichev">
+        <createSequence schemaName="entities" sequenceName="action_sequence" startValue="1" incrementBy="1"/>
+    </changeSet>
+
+    <!-- Последовательность для id в таблице Transaction -->
+    <changeSet id="6" author="ibelichev">
+        <createSequence schemaName="entities" sequenceName="transaction_sequence" startValue="1" incrementBy="1"/>
+    </changeSet>
+
+    <!-- Последовательность для id в таблице Auditable -->
+    <changeSet id="7" author="ibelichev">
+        <createSequence schemaName="entities" sequenceName="auditable_sequence" startValue="1" incrementBy="1"/>
+    </changeSet>
+
+     <changeSet id="8" author="ibelichev">
+         <sql>
+             ALTER TABLE entities."User" ALTER COLUMN id SET DEFAULT nextval('entities.user_sequence');
+             ALTER TABLE entities."Action" ALTER COLUMN id SET DEFAULT nextval('entities.action_sequence');
+             ALTER TABLE entities."Transaction" ALTER COLUMN id SET DEFAULT nextval('entities.transaction_sequence');
+             ALTER TABLE entities."Auditable" ALTER COLUMN id SET DEFAULT nextval('entities.auditable_sequence');
+         </sql>
+     </changeSet>
+
+</databaseChangeLog>

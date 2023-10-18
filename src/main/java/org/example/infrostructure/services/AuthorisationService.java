@@ -35,7 +35,7 @@ public class AuthorisationService {
      * @param password Пароль пользователя.
      * @return Статус авторизации (SUCCESS, USER_NOT_FOUND, или INVALID_PASSWORD).
      */
-    public AuthorisationStatus authorisation(String username, String password, long id) {
+    public AuthorisationStatus authorisation(String username, String password) {
         User user = userRepository.findByUsername(username);
         if (user != null) {
             if (user.getPassword().equals(password)) {
@@ -45,15 +45,15 @@ public class AuthorisationService {
                 AuditableStatus status = AuditableStatus.SUCCESS;
                 ActionType actionType = ActionType.LOGIN;
 
-                Action action = new Action(id, user.getId(), dateTime, status, actionType);
+                Action action = new Action(user.getId(), dateTime, status, actionType);
                 auditableRepository.addAuditable(action);
 
-                return AuthorisationStatus.SUCCESS;
+                return AuthorisationService.AuthorisationStatus.SUCCESS;
             } else {
-                return AuthorisationStatus.INVALID_PASSWORD;
+                return AuthorisationService.AuthorisationStatus.INVALID_PASSWORD;
             }
         } else {
-            return AuthorisationStatus.USER_NOT_FOUND;
+            return AuthorisationService.AuthorisationStatus.USER_NOT_FOUND;
         }
     }
 
@@ -63,7 +63,7 @@ public class AuthorisationService {
      * @param user Пользователь для регистрации.
      * @return true, если регистрация прошла успешно, false в противном случае.
      */
-    public boolean registration(User user, long id) {
+    public boolean registration(User user) {
         User existingUser = userRepository.findByUsername(user.getUsername());
         if (existingUser != null) {
             return false; // Пользователь с таким именем уже существует.
@@ -74,7 +74,7 @@ public class AuthorisationService {
         AuditableStatus status = AuditableStatus.SUCCESS;
         ActionType actionType = ActionType.REGISTRATION;
 
-        Action action = new Action(id, user.getId(), dateTime, status, actionType);
+        Action action = new Action(user.getId(), dateTime, status, actionType);
         auditableRepository.addAuditable(action);
 
         return true;
@@ -84,12 +84,12 @@ public class AuthorisationService {
     /**
      * Метод для завершения сессии, удаляет текущего пользователя из {@link SessionContext}
      */
-    public void logout(User user, long id) {
+    public void logout(User user) {
         LocalDateTime dateTime = LocalDateTime.now();
         AuditableStatus status = AuditableStatus.SUCCESS;
         ActionType actionType = ActionType.LOGOUT;
 
-        Action action = new Action(id, user.getId(), dateTime, status, actionType);
+        Action action = new Action(user.getId(), dateTime, status, actionType);
         auditableRepository.addAuditable(action);
 
         SessionContext.clearLoggedInUser();
