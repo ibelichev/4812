@@ -1,9 +1,10 @@
-package org.example.infrostructure.repositoryies;
+package org.example.infrostructure.repositoryies.collections;
 
 import org.example.core.models.Transaction;
 import org.example.core.models.enums.AuditableStatus;
 import org.example.core.models.enums.TransactionType;
 import org.example.core.repositories.TransactionRepository;
+import org.example.infrostructure.repositoryies.collections.TransactionRepositoryImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

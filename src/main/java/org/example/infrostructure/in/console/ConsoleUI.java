@@ -27,7 +27,6 @@ public class ConsoleUI {
     private final UserService userService;
     private final OperationService operationService;
 
-    private static long nextId = 1;
 
     private Scanner scanner = new Scanner(System.in);
 
@@ -91,7 +90,7 @@ public class ConsoleUI {
 
         System.out.print("Введите сумму пополнения: ");
         float amount = scanner.nextFloat();
-        TransacionReturns status = operationService.credit(currentUser, amount, nextId++);
+        TransacionReturns status = operationService.credit(currentUser, amount);
         if (status == TransacionReturns.SUCCESS) {
             System.out.println("Операция выполнена успешно");
         } else if (status == TransacionReturns.UNUNIQUE_ID) {
@@ -110,7 +109,7 @@ public class ConsoleUI {
 
         System.out.print("Введите сумму снятия: ");
         float amount = scanner.nextFloat();
-        TransacionReturns status = operationService.debit(currentUser, amount, nextId++);
+        TransacionReturns status = operationService.debit(currentUser, amount);
         if (status == TransacionReturns.SUCCESS) {
             System.out.println("Операция выполнена успешно");
         } else if (status == TransacionReturns.NOT_ENOUGH_MONEY) {
@@ -202,7 +201,7 @@ public class ConsoleUI {
         System.out.print("Введите пароль: ");
         String password = scanner.nextLine();
         AuthorisationService.AuthorisationStatus status =
-                authorisationService.authorisation(username, password, nextId++);
+                authorisationService.authorisation(username, password);
 
         if (status == AuthorisationService.AuthorisationStatus.SUCCESS) {
             operations();
@@ -257,7 +256,7 @@ public class ConsoleUI {
         }
 
         User newUser = new User(username, password1, firstName, lastName, 0.0f);
-        boolean status = authorisationService.registration(newUser, nextId++);
+        boolean status = authorisationService.registration(newUser);
         if (status) {
             System.out.println("Регистрация успешно завершена.");
         } else {
@@ -272,7 +271,7 @@ public class ConsoleUI {
      */
     private void logout(User currentUser) {
         System.out.println("До свидания!");
-        authorisationService.logout(currentUser, nextId++);
+        authorisationService.logout(currentUser);
         System.out.println();
         start();
     }

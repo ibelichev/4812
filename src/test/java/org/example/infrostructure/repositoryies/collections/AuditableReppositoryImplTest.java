@@ -1,12 +1,12 @@
-package org.example.infrostructure.repositoryies;
+package org.example.infrostructure.repositoryies.collections;
 
 import org.example.core.models.Action;
 import org.example.core.models.Auditable;
 import org.example.core.models.enums.ActionType;
 import org.example.core.models.enums.AuditableStatus;
 import org.example.core.repositories.AuditableRepository;
+import org.example.infrostructure.repositoryies.collections.AuditableReppositoryImpl;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;

@@ -38,5 +38,11 @@ public class Transaction extends Auditable {
         this.type = type;
         this.amount = amount;
     }
+
+    public Transaction(long userId, LocalDateTime dateTime, TransactionType type, AuditableStatus status, float amount) {
+        super(userId, dateTime, status);
+        this.type = type;
+        this.amount = amount;
+    }
 }
 

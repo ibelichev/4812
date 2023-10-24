@@ -1,4 +1,4 @@
-package org.example.infrostructure.repositoryies;
+package org.example.infrostructure.repositoryies.collections;
 
 import lombok.RequiredArgsConstructor;
 import org.example.core.models.Transaction;

@@ -37,4 +37,13 @@ public class Action extends Auditable {
         super(id, userId, dateTime, status);
         this.type = actionType;
     }
+
+    public Action(long userId,
+                  LocalDateTime dateTime,
+                  AuditableStatus status,
+                  ActionType actionType) {
+
+        super(userId, dateTime, status);
+        this.type = actionType;
+    }
 }

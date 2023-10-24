@@ -46,7 +46,7 @@ class AuthorisationServiceTest {
         AuditableStatus status = AuditableStatus.SUCCESS;
         ActionType actionType = ActionType.LOGIN;
 
-        AuthorisationService.AuthorisationStatus statusResult = authorisationService.authorisation("username", "password", 1);
+        AuthorisationService.AuthorisationStatus statusResult = authorisationService.authorisation("username", "password");
 
         assertEquals(AuthorisationService.AuthorisationStatus.SUCCESS, statusResult);
         assertEquals(user, SessionContext.getLoggedInUser());
@@ -57,7 +57,7 @@ class AuthorisationServiceTest {
     void testAuthorisationUserNotFound() {
         when(userRepository.findByUsername("username")).thenReturn(null);
 
-        AuthorisationService.AuthorisationStatus statusResult = authorisationService.authorisation("username", "password", 1);
+        AuthorisationService.AuthorisationStatus statusResult = authorisationService.authorisation("username", "password");
 
         assertEquals(AuthorisationService.AuthorisationStatus.USER_NOT_FOUND, statusResult);
         assertEquals(null, SessionContext.getLoggedInUser());
@@ -69,7 +69,7 @@ class AuthorisationServiceTest {
         User user = new User("username", "password", "f1", "l1", 100);
         when(userRepository.findByUsername("username")).thenReturn(user);
 
-        AuthorisationService.AuthorisationStatus statusResult = authorisationService.authorisation("username", "wrong_password", 1);
+        AuthorisationService.AuthorisationStatus statusResult = authorisationService.authorisation("username", "wrong_password");
 
         assertEquals(AuthorisationService.AuthorisationStatus.INVALID_PASSWORD, statusResult);
         assertEquals(null, SessionContext.getLoggedInUser());
@@ -85,7 +85,7 @@ class AuthorisationServiceTest {
         AuditableStatus status = AuditableStatus.SUCCESS;
         ActionType actionType = ActionType.REGISTRATION;
 
-        boolean registrationResult = authorisationService.registration(user, 2);
+        boolean registrationResult = authorisationService.registration(user);
 
         assertTrue(registrationResult);
         verify(userRepository).addUser(user);
@@ -99,7 +99,7 @@ class AuthorisationServiceTest {
 
         User user = new User("existing_user", "password", "u1", "l1", 200);
 
-        boolean registrationResult = authorisationService.registration(user, 2);
+        boolean registrationResult = authorisationService.registration(user);
 
         assertTrue(!registrationResult);
         verify(userRepository, Mockito.never()).addUser(user);
@@ -116,7 +116,7 @@ class AuthorisationServiceTest {
 
         SessionContext.setLoggedInUser(user);
 
-        authorisationService.logout(user, 3);
+        authorisationService.logout(user);
 
         assertEquals(null, SessionContext.getLoggedInUser());
         verify(auditableRepository).addAuditable(action);

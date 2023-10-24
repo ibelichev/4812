@@ -1,7 +1,9 @@
-package org.example.infrostructure.repositoryies;
+package org.example.infrostructure.repositoryies.collections;
 
 import org.example.core.models.User;
 import org.example.core.repositories.UserRepository;
+import org.example.infrostructure.repositoryies.collections.UserRepositoryImpl;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -29,12 +31,14 @@ class UserRepositoryImplTest {
 
     @Test
     void findByIdTest() {
-        User user1 = new User("u1", "p1", "n1", "l1", 200);
-        User user2 = new User("u2", "p2", "n2", "l2", 300.389f);
+        long id1 = 1;
+        long id2 = 2;
+        User user1 = new User(id1, "u1", "p1", "n1", "l1", 200);
+        User user2 = new User(id2, "u2", "p2", "n2", "l2", 300.389f);
         userRepository.addUser(user1);
         userRepository.addUser(user2);
-        User foundUser1 = userRepository.findById(user1.getId());
-        User foundUser2 = userRepository.findById(user2.getId());
+        User foundUser1 = userRepository.findById(id1);
+        User foundUser2 = userRepository.findById(id2);
         assertThat(foundUser1).isEqualTo(user1);
         assertThat(foundUser2).isEqualTo(user2);
     }

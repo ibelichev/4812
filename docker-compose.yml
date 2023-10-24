@@ -1,0 +1,11 @@
+version: '3'
+services:
+  postgres:
+    image: postgres:latest
+    container_name: wallet-service
+    environment:
+      POSTGRES_DB: wallet-service
+      POSTGRES_USER: wallet-admin
+      POSTGRES_PASSWORD: admin-password
+    ports:
+      - "5432:5432"

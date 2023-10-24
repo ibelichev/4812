@@ -17,20 +17,18 @@ public interface OperationService {
      *
      * @param user   Пользователь
      * @param amount Сумма пополнения
-     * @param id     Уникальный идентификатор транзакции
      * @return Статус выполнения операции
      */
-    TransacionReturns credit(User user, float amount, long id);
+    TransacionReturns credit(User user, float amount);
 
     /**
      * Осуществляет операцию снятия средств со счета пользователя
      *
      * @param user   Пользователь
      * @param amount Сумма снятия
-     * @param id     Уникальный идентификатор транзакции
      * @return Статус выполнения операции
      */
-    TransacionReturns debit(User user, float amount, long id);
+    TransacionReturns debit(User user, float amount);
 
     /**
      * Получает историю <b>транзакций</b> для конкретного пользователя

@@ -50,28 +50,13 @@ class OperationServiceImplTest {
         long transactionId = 1;
         when(transactionRepository.isTransactionIdUnique(transactionId)).thenReturn(true);
 
-        TransacionReturns result = operationService.credit(user, amount, transactionId);
+        TransacionReturns result = operationService.credit(user, amount);
 
         assertEquals(TransacionReturns.SUCCESS, result);
         verify(userRepository).updateUser(user);
         verify(transactionRepository).addTransaction(any(Transaction.class));
         verify(auditableRepository).addAuditable(any(Transaction.class));
         assertEquals(initialBalance + amount, user.getBalance(), 0.01f);
-    }
-
-    @Test
-    void testCreditNotUniqueTransactionId() {
-        User user = new User("username", "password", "f2", "l2", 200);
-        float amount = 75;
-        long transactionId = 2;
-        when(transactionRepository.isTransactionIdUnique(transactionId)).thenReturn(false);
-
-        TransacionReturns result = operationService.credit(user, amount, transactionId);
-
-        assertEquals(TransacionReturns.UNUNIQUE_ID, result);
-        verify(userRepository, Mockito.never()).updateUser(user);
-        verify(transactionRepository).addTransaction(any(Transaction.class));
-        verify(auditableRepository).addAuditable(any(Transaction.class));
     }
 
     @Test
@@ -82,28 +67,13 @@ class OperationServiceImplTest {
         long transactionId = 3;
         when(transactionRepository.isTransactionIdUnique(transactionId)).thenReturn(true);
 
-        TransacionReturns result = operationService.debit(user, amount, transactionId);
+        TransacionReturns result = operationService.debit(user, amount);
 
         assertEquals(TransacionReturns.SUCCESS, result);
         verify(userRepository).updateUser(user);
         verify(transactionRepository).addTransaction(any(Transaction.class));
         verify(auditableRepository).addAuditable(any(Transaction.class));
         assertEquals(initialBalance - amount, user.getBalance(), 0.01f);
-    }
-
-    @Test
-    void testDebitNotUniqueTransactionId() {
-        User user = new User("username", "password", "f4", "l4", 400);
-        float amount = 500;
-        long transactionId = 4;
-        when(transactionRepository.isTransactionIdUnique(transactionId)).thenReturn(false);
-
-        TransacionReturns result = operationService.debit(user, amount, transactionId);
-
-        assertEquals(TransacionReturns.UNUNIQUE_ID, result);
-        verify(userRepository, Mockito.never()).updateUser(user);
-        verify(transactionRepository).addTransaction(any(Transaction.class));
-        verify(auditableRepository).addAuditable(any(Transaction.class));
     }
 
     @Test
@@ -141,7 +111,7 @@ class OperationServiceImplTest {
         long transactionId = 6;
         when(transactionRepository.isTransactionIdUnique(transactionId)).thenReturn(true);
 
-        TransacionReturns result = operationService.debit(user, amount, transactionId);
+        TransacionReturns result = operationService.debit(user, amount);
 
         assertEquals(TransacionReturns.NOT_ENOUGH_MONEY, result);
         verify(userRepository, Mockito.never()).updateUser(user);

@@ -23,88 +23,57 @@ public class OperationServiceImpl implements OperationService {
     private final UserRepository userRepository;
     private final TransactionRepository transactionRepository;
     private final AuditableRepository auditableRepository;
+
     @Override
-    public TransacionReturns credit(User user, float amount, long id) {
+    public TransacionReturns credit(User user, float amount) {
         long userId = user.getId();
         float balance = user.getBalance();
         LocalDateTime dateTime = LocalDateTime.now();
         AuditableStatus status;
 
-        // проверка на уникальность id
-        if (transactionRepository.isTransactionIdUnique(id)) {
-
-            // сохранение транзакции как успешной, изменение баланс, если уникален id
-            status = AuditableStatus.SUCCESS;
-            user.setBalance(balance + amount);
-            userRepository.updateUser(user);
-            Transaction transaction = new Transaction(id, userId, dateTime,
-                    TransactionType.CREDIT, status, amount);
-            transactionRepository.addTransaction(transaction);
-            auditableRepository.addAuditable(transaction);
-
-            // возвращает статус операции
-            return TransacionReturns.SUCCESS;
-        } else {
-
-            // сохранение транзакции как невыполненной, если не уникален id
-            status = AuditableStatus.DECLINE;
-            Transaction transaction = new Transaction(id, userId, dateTime,
-                    TransactionType.CREDIT, status, amount);
-            transactionRepository.addTransaction(transaction);
-            auditableRepository.addAuditable(transaction);
-
-            // возвращает статус операции
-            return TransacionReturns.UNUNIQUE_ID;
-        }
+        status = AuditableStatus.SUCCESS;
+        user.setBalance(balance + amount);
+        userRepository.updateUser(user);
+        Transaction transaction = new Transaction(userId, dateTime,
+                TransactionType.CREDIT, status, amount);
+        transactionRepository.addTransaction(transaction);
+        auditableRepository.addAuditable(transaction);
+        return TransacionReturns.SUCCESS;
     }
 
+
     @Override
-    public TransacionReturns debit(User user, float amount, long id) {
+    public TransacionReturns debit(User user, float amount) {
         long userId = user.getId();
         float balance = user.getBalance();
         LocalDateTime dateTime = LocalDateTime.now();
         AuditableStatus status;
 
-        // проверка на уникальность id
-        if (transactionRepository.isTransactionIdUnique(id)) {
-            if (balance >= amount) {
+        if (balance >= amount) {
 
-                // сохранение транзакции как успешной, изменение баланс, если уникален id
-                // и достаточно средств
-                user.setBalance(balance - amount);
-                userRepository.updateUser(user);
-                status = AuditableStatus.SUCCESS;
-                Transaction transaction = new Transaction(id, userId, dateTime,
-                        TransactionType.DEBIT, status, amount);
-                transactionRepository.addTransaction(transaction);
-                auditableRepository.addAuditable(transaction);
-
-                // возвращает статус операции
-                return TransacionReturns.SUCCESS;
-
-            } else {
-                // сохранение транзакции как успешной, баланс не меняется т.к. недостаточно средств
-                status = AuditableStatus.DECLINE;
-                Transaction transaction = new Transaction(id, userId, dateTime,
-                        TransactionType.DEBIT, status, amount);
-                transactionRepository.addTransaction(transaction);
-                auditableRepository.addAuditable(transaction);
-
-                // возвращает статус операции
-                return TransacionReturns.NOT_ENOUGH_MONEY;
-            }
-
-        } else {
-
-            // сохранение транзакции как невыполненной, если не уникален id
-            status = AuditableStatus.DECLINE;
-            Transaction transaction = new Transaction(id, userId, dateTime,
+            // сохранение транзакции как успешной, изменение баланс, если уникален id
+            // и достаточно средств
+            user.setBalance(balance - amount);
+            userRepository.updateUser(user);
+            status = AuditableStatus.SUCCESS;
+            Transaction transaction = new Transaction(userId, dateTime,
                     TransactionType.DEBIT, status, amount);
             transactionRepository.addTransaction(transaction);
             auditableRepository.addAuditable(transaction);
 
             // возвращает статус операции
-            return TransacionReturns.UNUNIQUE_ID;
+            return TransacionReturns.SUCCESS;
+
+        } else {
+            // сохранение транзакции как успешной, баланс не меняется т.к. недостаточно средств
+            status = AuditableStatus.DECLINE;
+            Transaction transaction = new Transaction(userId, dateTime,
+                    TransactionType.DEBIT, status, amount);
+            transactionRepository.addTransaction(transaction);
+            auditableRepository.addAuditable(transaction);
+
+            // возвращает статус операции
+            return TransacionReturns.NOT_ENOUGH_MONEY;
         }
     }
 

@@ -47,4 +47,10 @@ public abstract class Auditable {
         this.dateTime = dateTime;
         this.status = status;
     }
+
+    public Auditable(long userId, LocalDateTime dateTime, AuditableStatus status) {
+        this.userId = userId;
+        this.dateTime = dateTime;
+        this.status = status;
+    }
 }

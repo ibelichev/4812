@@ -1,4 +1,4 @@
-package org.example.infrostructure.repositoryies;
+package org.example.infrostructure.repositoryies.collections;
 
 import org.example.core.models.Auditable;
 import org.example.core.models.Transaction;

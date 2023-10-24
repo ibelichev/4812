@@ -1,4 +1,4 @@
-package org.example.infrostructure.repositoryies;
+package org.example.infrostructure.repositoryies.collections;
 
 import lombok.NoArgsConstructor;
 import org.example.core.models.User;
@@ -13,9 +13,11 @@ import java.util.*;
 @NoArgsConstructor
 public class UserRepositoryImpl implements UserRepository {
     private final List<User> users = new ArrayList<>();
+    private long nextUserId = 1;
 
     @Override
     public void addUser(User user) {
+        user.setId(nextUserId++);
         users.add(user);
     }
 
